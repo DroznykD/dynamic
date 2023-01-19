@@ -39,16 +39,17 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // [END_EXCLUDE]
-
-        // [START get_deep_link]
         FirebaseDynamicLinks.getInstance().getDynamicLink(intent).addOnSuccessListener(
                 this
             ) { pendingDynamicLinkData ->
                 var deepLink: Uri? = null
                 if (pendingDynamicLinkData != null) {
                     deepLink = pendingDynamicLinkData.link
-                    println("deepLink: $deepLink")
+                    Log.d("MainActivity", "RECEIVED DEEP LINK: $deepLink")
+
+                    val intent = Intent(Intent.ACTION_VIEW)
+                    intent.data = deepLink
+                    startActivity(intent)
                 }
             }
             .addOnFailureListener(
